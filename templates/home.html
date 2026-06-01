@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}ScholarIntell — Find Your Scholarship{% endblock %}
+{% block content %}
+
+<!-- Hero -->
+<div class="text-center py-5 mb-4">
+  <div class="mb-3">
+    <span style="background:#eef2ff; color:#4f46e5; padding:6px 18px; border-radius:20px; font-size:0.85rem; font-weight:600;">
+      <i class="bi bi-stars"></i> AI-Powered Scholarship Finder
+    </span>
+  </div>
+  <h1 class="fw-bold mb-3" style="font-size:3.2rem; letter-spacing:-1px; color:#111827;">
+    Find the Perfect<br>
+    <span style="color:#4f46e5;">Scholarship for You</span>
+  </h1>
+  <p class="lead mb-4" style="color:#6b7280; max-width:520px; margin:0 auto 24px;">
+    Enter your academic profile and our AI matches you with the best scholarships from 46+ countries instantly.
+  </p>
+  <div class="d-flex gap-3 justify-content-center flex-wrap">
+    <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-5 py-3" style="font-size:1rem;">
+      Get Started Free <i class="bi bi-arrow-right ms-1"></i>
+    </a>
+    <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg px-4 py-3" style="font-size:1rem;">
+      Login
+    </a>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="row g-3 mb-5">
+  <div class="col-md-4">
+    <div class="card p-4 text-center h-100" style="border-top: 4px solid #4f46e5;">
+      <div style="font-size:2.5rem; font-weight:800; color:#4f46e5;">{{ total }}+</div>
+      <div class="fw-semibold mt-1">Total Scholarships</div>
+      <small class="text-muted">From universities worldwide</small>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-4 text-center h-100" style="border-top: 4px solid #16a34a;">
+      <div style="font-size:2.5rem; font-weight:800; color:#16a34a;">{{ funded }}+</div>
+      <div class="fw-semibold mt-1">Fully Funded</div>
+      <small class="text-muted">Tuition + living + travel covered</small>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-4 text-center h-100" style="border-top: 4px solid #ea580c;">
+      <div style="font-size:2.5rem; font-weight:800; color:#ea580c;">{{ countries }}+</div>
+      <div class="fw-semibold mt-1">Countries</div>
+      <small class="text-muted">Germany, USA, UK, Australia & more</small>
+    </div>
+  </div>
+</div>
+
+<!-- How it works -->
+<div class="text-center mb-4">
+  <h2 class="fw-bold" style="letter-spacing:-0.5px;">How It Works</h2>
+  <p class="text-muted">Three simple steps to find your scholarship</p>
+</div>
+<div class="row g-3 mb-5">
+  <div class="col-md-4">
+    <div class="card p-4 h-100">
+      <div style="width:48px;height:48px;background:#eef2ff;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+        <i class="bi bi-person-fill" style="color:#4f46e5;font-size:1.3rem;"></i>
+      </div>
+      <h5 class="fw-bold">1. Create Your Profile</h5>
+      <p class="text-muted mb-0">Enter your CGPA, degree level, field of study, and language certificate.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-4 h-100">
+      <div style="width:48px;height:48px;background:#f0fdf4;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+        <i class="bi bi-robot" style="color:#16a34a;font-size:1.3rem;"></i>
+      </div>
+      <h5 class="fw-bold">2. AI Matches You</h5>
+      <p class="text-muted mb-0">Our smart engine scores and ranks scholarships based on your profile instantly.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-4 h-100">
+      <div style="width:48px;height:48px;background:#fff7ed;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+        <i class="bi bi-send-fill" style="color:#ea580c;font-size:1.3rem;"></i>
+      </div>
+      <h5 class="fw-bold">3. Apply Directly</h5>
+      <p class="text-muted mb-0">Click Apply Now and go straight to the official scholarship application page.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA banner -->
+<div class="card p-5 text-center mb-4" style="background:linear-gradient(135deg,#4f46e5,#7c3aed); border:none; color:#fff;">
+  <h3 class="fw-bold mb-2">Ready to find your scholarship?</h3>
+  <p class="mb-4" style="opacity:0.85;">Join students who found their dream scholarship using ScholarIntell</p>
+  <a href="{% url 'register' %}" class="btn btn-lg px-5 py-3 fw-bold"
+     style="background:#fff; color:#4f46e5; border-radius:12px; font-size:1rem;">
+    Get Started Free <i class="bi bi-arrow-right ms-1"></i>
+  </a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block title %}{{ scholarship.name }} ? ScholarIntell{% endblock %}
+{% block content %}
+
+<div class="mb-3">
+  <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left"></i> Back
+  </a>
+</div>
+
+<div class="card p-4 mb-4">
+  <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+    <div>
+      <h3 class="fw-bold mb-1">{{ scholarship.name }}</h3>
+      <p class="text-muted mb-0">
+        <i class="bi bi-bank"></i> {{ scholarship.host_institution }}
+        {% if scholarship.host_country %}
+        &nbsp;|&nbsp; <i class="bi bi-geo-alt"></i> {{ scholarship.host_country }}
+        {% endif %}
+      </p>
+    </div>
+
+    {% if scholarship.fully_funded %}
+      <span class="badge fs-6 px-3 py-2" style="background:#dcfce7; color:#15803d;">
+        <i class="bi bi-star-fill"></i> Fully Funded
+      </span>
+    {% endif %}
+  </div>
+
+  <!-- Info grid -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="p-3 rounded text-center" style="background:#f0f4ff;">
+        <small class="text-muted d-block mb-1">Level</small>
+        <strong style="font-size:0.9rem;">{{ scholarship.level }}</strong>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="p-3 rounded text-center" style="background:#f0fdf4;">
+        <small class="text-muted d-block mb-1">Field</small>
+        <strong style="font-size:0.9rem;">
+          {{ scholarship.field_of_study|truncatechars:20 }}
+        </strong>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="p-3 rounded text-center" style="background:#fff7ed;">
+        <small class="text-muted d-block mb-1">Deadline</small>
+        <strong style="font-size:0.9rem;">
+          {{ scholarship.deadline|default:"See website"|truncatechars:20 }}
+        </strong>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="p-3 rounded text-center" style="background:#fdf4ff;">
+        <small class="text-muted d-block mb-1">Opens</small>
+        <strong style="font-size:0.9rem;">
+          {{ scholarship.open_date|default:"See website"|truncatechars:20 }}
+        </strong>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h5 class="fw-semibold">
+    <i class="bi bi-info-circle text-primary"></i> About
+  </h5>
+  <p class="text-muted">{{ scholarship.description }}</p>
+
+  {% if scholarship.what_it_covers %}
+  <h5 class="fw-semibold mt-4">
+    <i class="bi bi-gift text-success"></i> What It Covers
+  </h5>
+  <p class="text-muted">{{ scholarship.what_it_covers }}</p>
+  {% endif %}
+
+  {% if scholarship.special_requirements %}
+  <h5 class="fw-semibold mt-4">
+    <i class="bi bi-clipboard-check text-warning"></i> Special Requirements
+  </h5>
+  <p class="text-muted">{{ scholarship.special_requirements }}</p>
+  {% endif %}
+
+  {% if scholarship.language_requirements %}
+  <h5 class="fw-semibold mt-4">
+    <i class="bi bi-translate text-info"></i> Language Requirements
+  </h5>
+  <p class="text-muted">{{ scholarship.language_requirements }}</p>
+  {% endif %}
+
+  {% if scholarship.notes %}
+  <h5 class="fw-semibold mt-4">
+    <i class="bi bi-sticky text-secondary"></i> Notes
+  </h5>
+  <p class="text-muted">{{ scholarship.notes }}</p>
+  {% endif %}
+
+  <hr>
+
+  {% if scholarship.application_link %}
+  <div class="text-center mt-3">
+
+    <!-- Apply Button -->
+    <a href="{{ scholarship.application_link }}" target="_blank"
+       class="btn btn-primary btn-lg px-5">
+      Apply Now <i class="bi bi-box-arrow-up-right"></i>
+    </a>
+
+    <!-- Eligibility Button (ADDED RIGHT AFTER APPLY) -->
+    <a href="{% url 'eligibility_check' scholarship.pk %}"
+       class="btn btn-outline-success btn-lg px-4 ms-2">
+      <i class="bi bi-robot"></i> Check My Eligibility
+    </a>
+
+    <p class="text-muted small mt-2">
+      Opens the official application page
+    </p>
+
+  </div>
+  {% endif %}
+</div>
+
+<!-- Related scholarships -->
+{% if related %}
+<h5 class="fw-bold mb-3">Related Scholarships</h5>
+
+<div class="row g-3">
+  {% for s in related %}
+  <div class="col-md-4">
+    <div class="card p-3 h-100"
+         style="border-left: 4px solid {% if s.fully_funded %}#16a34a{% else %}#4f46e5{% endif %};">
+
+      <h6 class="fw-bold" style="font-size:0.88rem;">
+        {{ s.name }}
+      </h6>
+
+      <p class="text-muted small mb-2" style="font-size:0.8rem;">
+        {{ s.description|truncatewords:12 }}
+      </p>
+
+      <div class="d-flex gap-1 flex-wrap mb-2">
+        <span class="badge bg-light text-dark border" style="font-size:0.7rem;">
+          <i class="bi bi-geo-alt"></i> {{ s.host_country }}
+        </span>
+
+        {% if s.fully_funded %}
+        <span class="badge" style="background:#dcfce7; color:#15803d; font-size:0.7rem;">
+          Fully Funded
+        </span>
+        {% endif %}
+      </div>
+
+      <a href="{% url 'scholarship_detail' s.pk %}"
+         class="btn btn-outline-primary btn-sm mt-auto"
+         style="font-size:0.8rem;">
+        View Details
+      </a>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

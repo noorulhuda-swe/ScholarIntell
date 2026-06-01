@@ -1,0 +1,36 @@
+{% if page_obj.has_other_pages %}
+<nav class="mt-4">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.funded %}funded={{ request.GET.funded }}&{% endif %}{% if request.GET.country %}country={{ request.GET.country }}&{% endif %}{% if request.GET.level %}level={{ request.GET.level }}&{% endif %}page={{ page_obj.previous_page_number }}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      </li>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <li class="page-item active">
+          <span class="page-link" style="background:#4f46e5; border-color:#4f46e5;">{{ num }}</span>
+        </li>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <li class="page-item">
+          <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.funded %}funded={{ request.GET.funded }}&{% endif %}{% if request.GET.country %}country={{ request.GET.country }}&{% endif %}{% if request.GET.level %}level={{ request.GET.level }}&{% endif %}page={{ num }}">{{ num }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.funded %}funded={{ request.GET.funded }}&{% endif %}{% if request.GET.country %}country={{ request.GET.country }}&{% endif %}{% if request.GET.level %}level={{ request.GET.level }}&{% endif %}page={{ page_obj.next_page_number }}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+  <p class="text-center text-muted small">
+    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+  </p>
+</nav>
+{% endif %}

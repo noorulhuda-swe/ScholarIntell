@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Eligibility Check - {{ scholarship.name }}{% endblock %}
+{% block content %}
+
+<div class="mb-3">
+  <a href="{% url 'scholarship_detail' scholarship.pk %}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left"></i> Back to Scholarship
+  </a>
+</div>
+
+<div class="card p-4 mb-4">
+  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <div>
+      <h4 class="fw-bold mb-1">{{ scholarship.name }}</h4>
+      <p class="text-muted mb-0">
+        <i class="bi bi-geo-alt"></i> {{ scholarship.host_country }}
+        &nbsp;|&nbsp;
+        <i class="bi bi-mortarboard"></i> {{ scholarship.level }}
+      </p>
+    </div>
+    {% if scholarship.fully_funded %}
+      <span class="badge px-3 py-2" style="background:#dcfce7; color:#15803d; font-size:0.85rem;">
+        <i class="bi bi-star-fill"></i> Fully Funded
+      </span>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card p-4 mb-4" style="border-left: 4px solid #4f46e5;">
+  <h6 class="fw-bold mb-3"><i class="bi bi-person-fill text-primary"></i> Your Profile Being Checked</h6>
+  <div class="row g-2">
+    <div class="col-6 col-md-3">
+      <small class="text-muted d-block">Degree</small>
+      <strong>{{ profile.degree_level }}</strong>
+    </div>
+    <div class="col-6 col-md-3">
+      <small class="text-muted d-block">Field</small>
+      <strong>{{ profile.field_of_study }}</strong>
+    </div>
+    <div class="col-6 col-md-3">
+      <small class="text-muted d-block">CGPA</small>
+      <strong>{{ profile.cgpa }} / 4.0</strong>
+    </div>
+    <div class="col-6 col-md-3">
+      <small class="text-muted d-block">Language</small>
+      <strong>{{ profile.language_cert|default:"None" }} {{ profile.language_score|default:"" }}</strong>
+    </div>
+  </div>
+</div>
+{% if ai_result %}
+  {% if "STRONG MATCH" in ai_result %}
+    <div class="alert" style="background:#f0fdf4; border:2px solid #16a34a; border-radius:12px;">
+      <h5 style="color:#15803d;"><i class="bi bi-check-circle-fill"></i> Strong Match</h5>
+  {% elif "PARTIAL MATCH" in ai_result %}
+    <div class="alert" style="background:#fffbeb; border:2px solid #d97706; border-radius:12px;">
+      <h5 style="color:#b45309;"><i class="bi bi-exclamation-circle-fill"></i> Partial Match</h5>
+  {% else %}
+    <div class="alert" style="background:#fef2f2; border:2px solid #dc2626; border-radius:12px;">
+      <h5 style="color:#b91c1c;"><i class="bi bi-x-circle-fill"></i> Not Eligible</h5>
+  {% endif %}
+      <hr>
+      <div style="white-space:pre-line; font-size:0.95rem; line-height:1.7;">{{ ai_result }}</div>
+      <hr class="mt-3">
+      <div class="d-flex gap-2 flex-wrap">
+        {% if scholarship.application_link %}
+        <a href="{{ scholarship.application_link }}" target="_blank" class="btn btn-primary btn-sm">
+          Apply Now <i class="bi bi-box-arrow-up-right"></i>
+        </a>
+        {% endif %}
+        <form method="POST" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-clockwise"></i> Check Again
+          </button>
+        </form>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-sm">
+          <i class="bi bi-grid"></i> Back to Dashboard
+        </a>
+      </div>
+    </div>
+
+{% elif error %}
+  <div class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle"></i> {{ error }}
+  </div>
+
+{% else %}
+  <div class="card p-5 text-center">
+    <div style="font-size:4rem;">🤖</div>
+    <h4 class="fw-bold mt-3">AI Eligibility Checker</h4>
+    <p class="text-muted mb-4">
+      Our AI will analyze your profile against this scholarship requirements
+      and give you a detailed explanation of whether you qualify.
+    </p>
+    <form method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary btn-lg px-5">
+        <i class="bi bi-robot"></i> Check My Eligibility
+      </button>
+    </form>
+    <p class="text-muted small mt-3">
+      Powered by LLaMA 3 via Groq AI - takes about 3-5 seconds
+    </p>
+  </div>
+{% endif %}
+
+{% endblock %}
